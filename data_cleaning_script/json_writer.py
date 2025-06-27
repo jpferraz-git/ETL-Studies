@@ -1,7 +1,7 @@
-import datetime
+from _datetime import datetime
 import json
 
-import typing
+from typing import *
 
 json_data = [
     { "nome": "Biscoito Teens",
@@ -82,18 +82,34 @@ json_data = [
   }
 ]
 
-def treating_data(data: list):
-    for item, value, in data:
-        if "validade" in value:
-          validade = datetime.date(value)
+def treating_data(data: List[Dict[str, Any]]) -> None:
+    for values in data:
+        for key, value in values.items():
+          if key == "preco":
+            if value < 0.0:
+              print("Preco Negativo, invalido")
+            else:
+              print(f"Preco: {value}")
 
+          if key == "validade":
+            if value is not None:
+              # validade_formatada = lambda x: datetime.strptime(x, "%Y-%m-%d").date()
+              validade_formatada = datetime.strptime(value, "%Y-%m-%d").date()
+              if validade_formatada < datetime.strptime("2025-07-01", "%Y-%m-%d").date():
+                print(f"Produto vencido: {validade_formatada}")
+              else:
+                print(validade_formatada)
+            else:
+              print("Date is Null")
 
 def json_writer(data):
 
+    treating_data(data)
     path = "/home/user/ETL-Studies/ETL-Studies/data_cleaning_script/repository/items.json"
 
     with open(path, "w") as file:
         json.dump(data, file, indent=4)
 
 
-json_writer(json_data)
+# json_writer(json_data)
+treating_data(json_data)
