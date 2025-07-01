@@ -26,5 +26,5 @@ novo_dicionario = {}
 
 for palavra in range(len(frase)):
     if frase[palavra] == " ":
-        contador_palavra = len(frase[palavra]) -
+        contador_palavra = len(frase[palavra])
         novo_dicionario.update()
